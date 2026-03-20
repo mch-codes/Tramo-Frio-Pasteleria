@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Partida Fría · Pastelería</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap');
+
+:root {
+  --bg: #0f0f0e;
+  --bg2: #1a1a18;
+  --bg3: #222220;
+  --border: #2e2e2b;
+  --border2: #3a3a36;
+  --text: #f0ede6;
+  --text2: #9a9790;
+  --text3: #5a5855;
+  --accent: #e8c97a;
+  --accent2: #c4a654;
+  --blue: #6b9fd4;
+  --blue-bg: #1a2c3d;
+  --purple: #9b8fd4;
+  --purple-bg: #23203a;
+  --green: #7ab88a;
+  --green-bg: #1a2e20;
+  --amber: #d4a96b;
+  --amber-bg: #2e2318;
+  --red: #d47070;
+  --red-bg: #2e1a1a;
+  --tab-h: 56px;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+html { background: var(--bg); }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.5;
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+  overscroll-behavior: none;
+}
+
+/* ── HEADER ── */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 16px 12px;
+}
+.header-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+.header h1 {
+  font-family: 'DM Mono', monospace;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  line-height: 1.3;
+}
+.header-badges { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 6px; }
+.badge {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  padding: 2px 7px;
+  border-radius: 3px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.badge-blue { background: var(--blue-bg); color: var(--blue); }
+.badge-dim { background: var(--bg3); color: var(--text3); }
+.header-sub {
+  font-size: 11px;
+  color: var(--text3);
+  margin-top: 2px;
+  font-family: 'DM Mono', monospace;
+}
+
+/* ── BOTTOM NAV ── */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 200;
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  display: flex;
+  padding-bottom: var(--safe-bottom);
+}
+.nav-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  height: var(--tab-h);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text3);
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: color 0.15s;
+  padding: 0 4px;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.nav-btn .icon {
+  font-size: 18px;
+  line-height: 1;
+  transition: transform 0.15s;
+}
+.nav-btn.active { color: var(--accent); }
+.nav-btn:active .icon { transform: scale(0.88); }
+
+/* ── CONTENT AREA ── */
+.content {
+  padding: 0 0 calc(var(--tab-h) + var(--safe-bottom) + 16px);
+}
+.section { display: none; }
+.section.active { display: block; }
+
+/* ── PROGRESS ── */
+.progress-area {
+  padding: 14px 16px;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+}
+.prog-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.stat-box {
+  background: var(--bg3);
+  border-radius: 8px;
+  padding: 10px 12px;
+  text-align: center;
+}
+.stat-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 24px;
+  font-weight: 300;
+  color: var(--text);
+  line-height: 1;
+  margin-bottom: 3px;
+}
+.stat-label { font-size: 10px; color: var(--text3); letter-spacing: 0.03em; }
+.prog-bar-wrap {}
+.prog-meta {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--text3);
+  margin-bottom: 6px;
+}
+.prog-bar {
+  height: 3px;
+  background: var(--border2);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.prog-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width 0.4s cubic-bezier(.4,0,.2,1);
+}
+
+/* ── BLOCKS ── */
+.block { padding: 0 16px; margin-top: 20px; }
+.block-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+.block-title {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text3);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.reset-btn {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: var(--text3);
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  padding: 4px 9px;
+  border-radius: 4px;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: all 0.15s;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.reset-btn:active { background: var(--border2); }
+
+/* ── CHECKLIST ── */
+.checklist { display: flex; flex-direction: column; gap: 2px; }
+.check-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 11px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.12s;
+  -webkit-user-select: none;
+  user-select: none;
+  min-height: 44px;
+}
+.check-item:active { background: var(--bg3); }
+.checkbox {
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid var(--border2);
+  border-radius: 5px;
+  flex-shrink: 0;
+  margin-top: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  background: transparent;
+}
+.check-item.done .checkbox {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.checkmark {
+  width: 9px;
+  height: 5px;
+  border-left: 2px solid var(--bg);
+  border-bottom: 2px solid var(--bg);
+  transform: rotate(-45deg) translateY(-1px);
+  display: none;
+  flex-shrink: 0;
+}
+.check-item.done .checkmark { display: block; }
+.check-text { flex: 1; min-width: 0; }
+.label {
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--text);
+  transition: color 0.15s;
+}
+.sublabel {
+  font-size: 12px;
+  color: var(--text3);
+  margin-top: 2px;
+  line-height: 1.5;
+  font-family: 'DM Mono', monospace;
+  font-weight: 300;
+}
+.check-item.done .label {
+  text-decoration: line-through;
+  color: var(--text3);
+}
+
+/* ── TAGS ── */
+.tag {
+  display: inline-block;
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  padding: 2px 5px;
+  border-radius: 3px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+.tf { background: var(--blue-bg); color: var(--blue); }
+.tp { background: var(--purple-bg); color: var(--purple); }
+.tb { background: var(--green-bg); color: var(--green); }
+.tw { background: var(--amber-bg); color: var(--amber); }
+.tr { background: var(--red-bg); color: var(--red); }
+
+/* ── INFO BOX ── */
+.info-box {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+}
+.info-box strong {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 5px;
+}
+.info-box p, .info-box ul {
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.7;
+}
+.info-box ul { padding-left: 14px; }
+
+/* ── TWO COL ── */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin: 16px 16px 0;
+}
+.col-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 13px;
+}
+.col-card h3 {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  font-weight: 500;
+  color: var(--text3);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.col-card ul { list-style: none; font-size: 12px; line-height: 1.9; color: var(--text2); }
+.col-card li::before { content: "· "; color: var(--text3); }
+
+/* ── TABLE ── */
+.tw-wrap {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 0 16px;
+}
+table { width: 100%; border-collapse: collapse; }
+th {
+  text-align: left;
+  padding: 9px 12px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text3);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+}
+td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+  vertical-align: top;
+  line-height: 1.5;
+}
+tr:last-child td { border-bottom: none; }
+td strong { font-weight: 500; color: var(--text); }
+td:first-child { color: var(--text2); }
+
+/* ── PILLS ── */
+.pill {
+  display: inline-block;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.p-ok { background: var(--green-bg); color: var(--green); }
+.p-warn { background: var(--amber-bg); color: var(--amber); }
+.p-info { background: var(--blue-bg); color: var(--blue); }
+.p-urg { background: var(--red-bg); color: var(--red); }
+
+/* ── RECIPE CARDS ── */
+.recipe-card {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 0 16px 8px;
+}
+.recipe-head {
+  padding: 13px 14px;
+  background: var(--bg2);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+  min-height: 44px;
+  -webkit-user-select: none;
+  user-select: none;
+  transition: background 0.12s;
+}
+.recipe-head:active { background: var(--bg3); }
+.recipe-body {
+  padding: 12px 14px;
+  display: none;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text2);
+  border-top: 1px solid var(--border);
+}
+.recipe-body.open { display: block; }
+.recipe-body strong { color: var(--text); font-weight: 500; }
+.recipe-section { margin-bottom: 9px; }
+.recipe-section:last-child { margin-bottom: 0; }
+.chevron {
+  color: var(--text3);
+  font-size: 11px;
+  transition: transform 0.2s;
+  flex-shrink: 0;
+  margin-left: 8px;
+}
+.chevron.open { transform: rotate(180deg); }
+
+/* ── BLOCK SUBTITLE (recipe section dividers) ── */
+.recipe-section-title {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text3);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 14px 16px 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ── PEDIDOS ── */
+.prov-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin: 0 16px 8px;
+  overflow: hidden;
+}
+.prov-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--border);
+}
+.prov-row:last-child { border-bottom: none; }
+.prov-info { flex: 1; min-width: 0; }
+.prov-name { font-size: 13px; font-weight: 500; color: var(--text); }
+.prov-detail { font-size: 12px; color: var(--text3); margin-top: 1px; font-family: 'DM Mono', monospace; font-weight: 300; }
+.prov-freq { flex-shrink: 0; }
+
+/* ── SEMANAL TABLE ── */
+.day-card {
+  margin: 0 16px 8px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.day-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+}
+.day-name {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--accent);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.day-alert { font-size: 11px; color: var(--text3); }
+.day-body { padding: 10px 14px; font-size: 13px; color: var(--text2); line-height: 1.6; }
+
+/* ── HORARIOS ── */
+.horario-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px;
+  margin: 0 16px 8px;
+}
+.horario-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border);
+}
+.horario-row:last-child { border-bottom: none; }
+.horario-label { font-size: 12px; color: var(--text2); }
+.horario-time {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  color: var(--accent);
+  font-weight: 400;
+}
+
+/* ── PEDIDO SEMANAL GRID ── */
+.pedido-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding: 0 16px;
+  margin-top: 0;
+}
+
+/* ── TIMBRE ALERT ── */
+.alert-banner {
+  background: var(--amber-bg);
+  border: 1px solid var(--amber);
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin: 16px 16px 0;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.alert-icon { font-size: 16px; flex-shrink: 0; }
+.alert-text { font-size: 13px; color: var(--amber); line-height: 1.5; }
+.alert-text strong { display: block; font-weight: 500; margin-bottom: 2px; font-size: 12px; letter-spacing: 0.02em; }
+
+/* ── SPACING HELPERS ── */
+.mt8 { margin-top: 8px; }
+.mt16 { margin-top: 16px; }
+.mx16 { margin-left: 16px; margin-right: 16px; }
+.pb8 { padding-bottom: 8px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div>
+      <h1>Partida Fría<br>y Pastelería</h1>
+      <div class="header-badges">
+        <span class="badge badge-blue">Tramo Frío</span>
+        <span class="badge badge-dim">Fine dining · 50–100 pax</span>
+      </div>
+    </div>
+  </div>
+  <div class="header-sub">Recetario · Proveedores · Checklists</div>
+</div>
+
+<div class="content">
+
+  <!-- ══ DIARIA ══ -->
+  <div class="section active" id="tab-diaria">
+    <div class="progress-area">
+      <div class="prog-stats">
+        <div class="stat-box"><div class="stat-num" id="d-total">—</div><div class="stat-label">Total</div></div>
+        <div class="stat-box"><div class="stat-num" id="d-done">0</div><div class="stat-label">Hechas</div></div>
+        <div class="stat-box"><div class="stat-num" id="d-pend">—</div><div class="stat-label">Pend.</div></div>
+      </div>
+      <div class="prog-meta">
+        <span id="d-pct">0% completado</span>
+      </div>
+      <div class="prog-bar"><div class="prog-fill" id="d-fill" style="width:0%"></div></div>
+    </div>
+
+    <div class="block">
+      <div class="block-header">
+        <div class="block-title">Apertura</div>
+        <button class="reset-btn" onclick="resetSec('ap')">Resetear</button>
+      </div>
+      <div class="checklist" id="ap">
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Revisar temperaturas cámara delantera y trasera</div><div class="sublabel">Delantera 0–4°C · Trasera 0–4°C · Congelador −18°C</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Leer reservas del día — ajustar producción</div><div class="sublabel">Cubiertos previstos → calcular raciones necesarias</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Revisar stock de cámara delantera</div><div class="sublabel">Ver tab Cámaras para lista completa</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Comprobar helados Bico de xeado en congelador</div><div class="sublabel">Orujo ×2 llenos · Fresa ×1 · Frutos rojos ×1</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Briefing con el ayudante — repartir tareas del día</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Revisar pedido recibido (Food Moon / Tu cosecha)</div><div class="sublabel">Calidad, peso, etiquetado. Urgencias: Pescadería coruñesa</div></div></div>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-header">
+        <div class="block-title">Mise en place fría <span class="tag tf">fría</span></div>
+        <button class="reset-btn" onclick="resetSec('mf')">Resetear</button>
+      </div>
+      <div class="checklist" id="mf">
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Mantequilla de oveja — racionar en taper de 6</div><div class="sublabel">Sacar 1–2h antes del servicio para atemperar</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Mantequilla ahumada — verificar mangas o producir</div><div class="sublabel">Empomar noche antes · ahumar 20min · kitchen · mangas 350gr</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Anchoa — tostadas pan limón (1 bolsa ≈ 70 pax)</div><div class="sublabel">Tostar 10 min a 180°C</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Tostadas pan blanco en triángulo (1 bolsa ≈ 50 pax)</div><div class="sublabel">Tostar 10 min a 180°C</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Steak — picar caderas 120gr/ración, aliño emulsión</div><div class="sublabel">Emulsión thermomix · cebolla morada · pepinillo · patata chip</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Tartar langostino — picar y aliñar</div><div class="sublabel">Crema aguacate mangas 220gr · tostadas croissant 180°C 5min</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Mejillones — cocer vapor 115°C 6–8min, escabeche</div><div class="sublabel">Salmuera 7% al enfriar · reservar en taper</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Aceite de cilantro — verificar biberón en gastro del 3</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Cebollino, tomate seco picado — racionar en taper</div></div></div>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-header">
+        <div class="block-title">Mise en place pastelería <span class="tag tp">past.</span></div>
+        <button class="reset-btn" onclick="resetSec('mp')">Resetear</button>
+      </div>
+      <div class="checklist" id="mp">
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Flanes — verificar o producir (12h reposo)</div><div class="sublabel">Vapor 85°C 35min · mínimo 2 bandejas en cámara</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Sabayón — verificar bandejas (mín. 5) o producir</div><div class="sublabel">Boles finos · cacillo del 8 por bol</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Limón (mousse) — verificar bandejas (mín. 3+1 timbre)</div><div class="sublabel">Boles pequeños · integrar nata a 38°C</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Hojaldre — hornear si quedan menos de 32 discos</div><div class="sublabel">170°C 20min tapado → azúcar glass → 180°C 12min → 200°C 2min</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Ganache limón — mangas 300gr, verificar bolsas (mín. 10)</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Gel de limón — verificar manga o producir</div><div class="sublabel">Agar-agar · hervir 2min · turmix · mangas 200ml</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Puré de limón — verificar mangas o producir</div><div class="sublabel">Blanquear piel 3× · triturar · mantequilla pomada · mangas 250ml</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Chantilly — semimontar vel. 4.5–5</div><div class="sublabel">1L nata + 125gr azúcar + vainilla · reservar en frío</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Frosting — verificar taper (mín. 3) o producir</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Fruta de temporada — preparar según la del día</div><div class="sublabel">Arándanos/fresas: brasa · Cerezas: deshuesar · Higos: 200°C 4min</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Helados Bico — traer del congelador antes del servicio</div><div class="sublabel">2 orujo llenos · 1 fresa · 1 frutos rojos</div></div></div>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-header">
+        <div class="block-title">Servicio</div>
+        <button class="reset-btn" onclick="resetSec('sv')">Resetear</button>
+      </div>
+      <div class="checklist" id="sv">
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Cargar timbre izquierdo (dulce)</div><div class="sublabel">Ver tab Timbre para lista completa</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Cargar timbre derecho (salado)</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Gastro del 3 en cámara delantera con biberones listos</div><div class="sublabel">Escabeche · aceite cilantro · yema · aceite 12 oct · sal · limas</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Mantequilla de oveja atemperada (sacar 1–2h antes)</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Avisar al chef si hay faltante o incidencia</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Gestionar alérgenos — confirmar con sala</div><div class="sublabel">Sin gluten: Panacea</div></div></div>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-header">
+        <div class="block-title">Cierre</div>
+        <button class="reset-btn" onclick="resetSec('ci')">Resetear</button>
+      </div>
+      <div class="checklist" id="ci">
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Tapar, etiquetar y datar todo lo que vuelve a cámara</div><div class="sublabel">Nombre + fecha elaboración + caducidad · FIFO</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Revisar cámara delantera con checklist mínimos</div><div class="sublabel">Lo que esté por debajo → anotar para producir mañana</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Si queda mantequilla: empomar para mañana</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Registrar temperaturas de cierre (hoja APPCC)</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Limpiar zona pastelería</div><div class="sublabel">Abatidor · vacío · 2 hornos · kitchen · thermomix</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Limpiar y desinfectar superficie de partida fría</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Nota para el día siguiente (pendientes, bajas de stock)</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ TIMBRE ══ -->
+  <div class="section" id="tab-timbre">
+    <div class="alert-banner mt16">
+      <div class="alert-icon">⚠</div>
+      <div class="alert-text"><strong>Cargar antes del primer cubierto</strong>Si falta algo, el servicio se para. Revisa ambos lados.</div>
+    </div>
+
+    <div class="block">
+      <div class="block-header">
+        <div class="block-title">Timbre izquierdo — dulce <span class="tag tp">past.</span></div>
+        <button class="reset-btn" onclick="resetSec('ti')">Resetear</button>
+      </div>
+      <div class="checklist" id="ti">
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">1 bandeja de flanes (15 ud)</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">1 bandeja de sabayones (6 ud)</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">1 bandeja de limones (6 ud)</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">1 taper nuevo de chantilly</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">1 taper de fruta de temporada</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">1 taper de frosting</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">1 manga de puré de limón</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">1 manga de ganache de chocolate</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">1 manga de gel de limón</div></div></div>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-header">
+        <div class="block-title">Timbre derecho — salado <span class="tag tf">fría</span></div>
+        <button class="reset-btn" onclick="resetSec('td')">Resetear</button>
+      </div>
+      <div class="checklist" id="td">
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">1 taper con tomate seco picado y cebollino</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">2 tapers de mantequilla de oveja</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">1 taper de anchoa en aceite</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">1 barra de pan sin gluten (Panacea)</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">1 taper lleno con mejillones en escabeche</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">1 taper de carne de steak (20 raciones)</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">1 taper con mangas de guacamole y mantequilla ahumada</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">1 taper con langostino picado</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Gastro del 3 en cámara — biberones listos</div><div class="sublabel">Escabeche · aceite cilantro · yema · aceite 12 oct · sal · limas · naranjas</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ CÁMARAS ══ -->
+  <div class="section" id="tab-camaras">
+    <div class="block">
+      <div class="block-header">
+        <div class="block-title">Cámara delantera — mínimos</div>
+        <button class="reset-btn" onclick="resetSec('cd')">Resetear</button>
+      </div>
+      <div class="checklist" id="cd">
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">4 tapers mantequilla de oveja</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">1 taper emulsión steak 2L</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">1 bandeja cadera secándose en rejilla</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">1 bote pepinillos · 1 bote cebollas moradas</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">1 taper mostaza · 1 taper ketchup</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Mín. 3–4 mangas de guacamole</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">1 taper langostinos · 1 manojo cebollino</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">1 bote tomate seco · taper mangas mantequilla ahumada</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">1 taper anchoas · 2 tapers mejillones en escabeche</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Taper grande: 3 ganache + 4 puré limón + gel limón</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Mín. 3 tapers frosting · 1 taper chantilly</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Masa de flan +4L · 2 bandejas flanes horneados</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Arándanos y/o fruta de temporada</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">3 bandejas limón + 1 en timbre · limón exprimido</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">5 bandejas sabayón</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Taper con agua y chips laminados</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Coulis 3+ · ganache 1+ · escabeche 1+ · aceite cilantro 1</div></div></div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="col-card">
+        <h3>Cámara trasera</h3>
+        <ul>
+          <li>Queso crema 3kg</li>
+          <li>Nata 8L · Leche 2L</li>
+          <li>Yema de huevo 4L</li>
+          <li>Caderas 3ud · Cebolla 2kg</li>
+          <li>Latas anchoas 3ud</li>
+          <li>Aguacate 2kg</li>
+          <li>Mantequilla 4kg</li>
+          <li>Chocolate blanco 6kg</li>
+          <li>Naranjas 1kg · Limas 1kg</li>
+          <li>Escabeche 4 bolsas 2L</li>
+        </ul>
+      </div>
+      <div class="col-card">
+        <h3>Congelador</h3>
+        <ul>
+          <li>Pan sin gluten 8ud</li>
+          <li>Helado orujo 6ud</li>
+          <li>Aceite cilantro 10L</li>
+          <li>Mangas puré limón 12ud</li>
+          <li>Bolsas ganache 10ud</li>
+          <li>Langostinos mín. 5kg</li>
+          <li>Coulis 20ud 200ml</li>
+          <li>Ketchup 5ud · Mostaza 10ud</li>
+          <li>Discos hojaldre +32</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-header">
+        <div class="block-title">Almacén secos</div>
+        <button class="reset-btn" onclick="resetSec('as')">Resetear</button>
+      </div>
+      <div class="checklist" id="as">
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Chocolate negro (Puchero) · Chocolate blanco</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Nibs de cacao (Puchero) · Avellana garrapiñada</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Tomate seco · Hojas de gelatina</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Gastro con hojaldre · Harina</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Azúcar glass · Azúcar blanco</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Pasta almendra · Almendra molida · Frutos secos</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Coco rallado · Chocolate chips · Gluten</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ RECETAS ══ -->
+  <div class="section" id="tab-recetas">
+    <div class="info-box mx16 mt16">
+      <strong>Recetario real de la partida</strong>
+      <p>Toca cada receta para ver ingredientes, cantidades y proceso.</p>
+    </div>
+
+    <div class="recipe-section-title">Platos fríos <span class="tag tf">fría</span></div>
+
+    <div class="recipe-card">
+      <div class="recipe-head" onclick="toggleRecipe(this)">Mantequilla de oveja <span class="chevron">▼</span></div>
+      <div class="recipe-body">
+        <div class="recipe-section"><strong>Mise en place:</strong> Racionar en taper de 6 · Sacar 1–2h antes para atemperar</div>
+        <div class="recipe-section"><strong>Pan:</strong> Pan blanco en triángulo · 1 bolsa ≈ 50 pax · tostar 10min 180°C</div>
+        <div class="recipe-section"><strong>Proveedor:</strong> Calaveruela (4kg/semana)</div>
+      </div>
+    </div>
+
+    <div class="recipe-card">
+      <div class="recipe-head" onclick="toggleRecipe(this)">Anchoa <span class="chevron">▼</span></div>
+      <div class="recipe-body">
+        <div class="recipe-section"><strong>Mise en place:</strong> Anchoa en aceite · Pan limón 1 bolsa ≈ 70 pax · tostar 10min 180°C</div>
+        <div class="recipe-section"><strong>Mantequilla ahumada:</strong> Empomar noche anterior · gastro con papel + film · ahumar 20min · dejar tapado 1h · montar en kitchen · mangas 350gr</div>
+      </div>
+    </div>
+
+    <div class="recipe-card">
+      <div class="recipe-head" onclick="toggleRecipe(this)">Steak tartare <span class="chevron">▼</span></div>
+      <div class="recipe-body">
+        <div class="recipe-section"><strong>Carne:</strong> Cadera picada 120gr/ración (Raza Nostra 6×/semana)</div>
+        <div class="recipe-section"><strong>Aliño emulsión:</strong> 1L aceite de grasa · 200gr yema pasteurizada · 50gr ketchup · 12gr mostaza · 100ml perrins · 100ml zumo limón · sal → Thermomix 70°C vel.3.5 con yema → hilo de aceite subiendo velocidad → mezclar resto</div>
+        <div class="recipe-section"><strong>Guarnición:</strong> Cebolla morada brunoise · Pepinillo (thermomix vol.10, 1–2s) · Patata chip (160°C) · Cebollino</div>
+        <div class="recipe-section"><strong>Mostaza casera:</strong> 550gr mostaza grano · 7L agua · 800ml vinagre manzana · ajo polvo + cúrcuma + sal/pimienta → envasar reposar 48h → triturar → chino → bolsas 200ml</div>
+        <div class="recipe-section"><strong>Ketchup casero:</strong> 1kg tomate · cebolla · pimiento verde · ajo · 50gr azúcar moreno · 70ml vinagre manzana · especias → cocer 40–50min → triturar → 1h más → chino → bolsas 1L</div>
+      </div>
+    </div>
+
+    <div class="recipe-card">
+      <div class="recipe-head" onclick="toggleRecipe(this)">Tartar de langostino <span class="chevron">▼</span></div>
+      <div class="recipe-body">
+        <div class="recipe-section"><strong>Langostino:</strong> Picar · aliñar con yema pasteurizada, sal, lima rallada, aceite 12 octubre</div>
+        <div class="recipe-section"><strong>Crema aguacate (400gr limpio):</strong> 50ml aceite zafra · 60ml agua · 50ml zumo limón · 10gr sal → thermomix → mangas 220gr</div>
+        <div class="recipe-section"><strong>Guarnición:</strong> Tostada croissant 180°C 5min · tomate seco en cubos · cebollino picado</div>
+        <div class="recipe-section"><strong>Proveedor:</strong> Noray 40kg/2 semanas · Pescadería coruñesa urgencia</div>
+      </div>
+    </div>
+
+    <div class="recipe-card">
+      <div class="recipe-head" onclick="toggleRecipe(this)">Mejillones en escabeche <span class="chevron">▼</span></div>
+      <div class="recipe-body">
+        <div class="recipe-section"><strong>Cocción:</strong> Gastros agujereadas · gastro sin agujeros abajo · vapor 115°C 6–8min · enfriar salmuera 7%</div>
+        <div class="recipe-section"><strong>Escabeche:</strong> 3L aceite oliva suave · 2L vinagre manzana · 2 cabezas ajo · 2 cebollas · 2 zanahorias · 1 puerro · ½ pimiento rojo · pimienta Jamaica · laurel · 50gr pimentón Vera → confitar verduras 3h → hervir → pimentón+vinagre → infusionar en frío toda la noche → colar → poner a punto</div>
+        <div class="recipe-section"><strong>Aceite cilantro:</strong> Igual cantidad cilantro que aceite · thermomix vel.10 15min · colar fino/estameña · bolsas 200ml</div>
+      </div>
+    </div>
+
+    <div class="recipe-section-title">Pastelería <span class="tag tp">past.</span></div>
+
+    <div class="recipe-card">
+      <div class="recipe-head" onclick="toggleRecipe(this)">Sabayón de chocolate negro <span class="chevron">▼</span></div>
+      <div class="recipe-body">
+        <div class="recipe-section"><strong>Ingredientes:</strong> 650gr chocolate negro · 280gr yema · 320gr azúcar · 8 huevos · 850ml nata</div>
+        <div class="recipe-section"><strong>Proceso:</strong> Triturar chocolate thermomix → baño María → calentar nata (sin hervir) → integrar con lengua → montar huevos+yema en kitchen hasta doblar → añadir azúcar poco a poco → integrar con chocolate → boles finos · 1 cacillo del 8 por bol</div>
+        <div class="recipe-section"><strong>Guarnición:</strong> Nibs de cacao (Puchero) · helado crema de orujo (Bico de xeado)</div>
+      </div>
+    </div>
+
+    <div class="recipe-card">
+      <div class="recipe-head" onclick="toggleRecipe(this)">Limón (mousse choc. blanco) <span class="chevron">▼</span></div>
+      <div class="recipe-body">
+        <div class="recipe-section"><strong>Ingredientes:</strong> 600gr chocolate blanco · 1L nata · 400ml leche · 12 hojas gelatina</div>
+        <div class="recipe-section"><strong>Proceso:</strong> Derretir chocolate baño María → hidratar gelatina en agua+hielo → calentar leche (sin hervir) → montar nata (ojo no pasar) → disolver gelatina en leche → añadir rápido al chocolate → enfriar 38°C → integrar nata poco a poco → boles pequeños que pesan</div>
+        <div class="recipe-section"><strong>Guarnición:</strong> Ganache limón · gel limón · puré limón · hojaldre</div>
+      </div>
+    </div>
+
+    <div class="recipe-card">
+      <div class="recipe-head" onclick="toggleRecipe(this)">Ganache de limón <span class="chevron">▼</span></div>
+      <div class="recipe-body">
+        <div class="recipe-section"><strong>Ingredientes:</strong> 650gr choc. blanco · 200gr leche · 700gr nata · 3gr sal · piel 3 limas + 4 limones</div>
+        <div class="recipe-section"><strong>Proceso:</strong> Infusionar cítricos en leche+nata 30min sin hervir → colar → mezclar con chocolate → homogeneizar → bolsas 1kg → montar kitchen al pase → mangas 300gr</div>
+      </div>
+    </div>
+
+    <div class="recipe-card">
+      <div class="recipe-head" onclick="toggleRecipe(this)">Gel de limón <span class="chevron">▼</span></div>
+      <div class="recipe-body">
+        <div class="recipe-section"><strong>Ingredientes:</strong> 180ml zumo limón · 120ml agua · 30gr azúcar · 4gr agar-agar</div>
+        <div class="recipe-section"><strong>Proceso:</strong> Calentar agua+zumo → añadir azúcar+agar → hervir 2min → gastro → enfriar rápido → turmix sin aire → colar → mangas 200ml</div>
+      </div>
+    </div>
+
+    <div class="recipe-card">
+      <div class="recipe-head" onclick="toggleRecipe(this)">Puré de limón <span class="chevron">▼</span></div>
+      <div class="recipe-body">
+        <div class="recipe-section"><strong>Ingredientes:</strong> 180gr piel limón · 130ml zumo · 180gr azúcar · 60gr mantequilla pomada</div>
+        <div class="recipe-section"><strong>Proceso:</strong> Blanquear piel 3× desde agua fría → cocer 15min → triturar piel+zumo+azúcar → enfriar 45°C → incorporar mantequilla → emulsionar con varilla → mangas 250ml</div>
+      </div>
+    </div>
+
+    <div class="recipe-card">
+      <div class="recipe-head" onclick="toggleRecipe(this)">Flan de leche de cabra <span class="chevron">▼</span></div>
+      <div class="recipe-body">
+        <div class="recipe-section"><strong>Ingredientes:</strong> 1400ml leche cabra · 600ml nata · 450gr yema · 270gr azúcar · 4gr sal</div>
+        <div class="recipe-section"><strong>Proceso:</strong> Thermomix vel.3.5 hasta 65°C → chino fino → taper → reposo frío mín. 12h → flaneras con caramelo → filmar individual → gastros planas → vapor 85°C 35min → enfriar</div>
+        <div class="recipe-section"><strong>Proveedor leche:</strong> Cultivo 18L / alternativa Food Moon</div>
+      </div>
+    </div>
+
+    <div class="recipe-card">
+      <div class="recipe-head" onclick="toggleRecipe(this)">Hojaldre (discos) <span class="chevron">▼</span></div>
+      <div class="recipe-body">
+        <div class="recipe-section"><strong>Proveedor:</strong> Amasa (3 días antelación, hablar con Carlos)</div>
+        <div class="recipe-section"><strong>Proceso:</strong> Estirar rodillo → cortar discos → gastros con papel parafinado → silpat+gastro agujereada → tapar → 170°C 20min → retirar → azúcar glass → 180°C 12min → si falta color: 200°C 2min</div>
+        <div class="recipe-section"><strong>Stock mínimo:</strong> +32 discos en congelador</div>
+      </div>
+    </div>
+
+    <div class="recipe-card">
+      <div class="recipe-head" onclick="toggleRecipe(this)">Chantilly <span class="chevron">▼</span></div>
+      <div class="recipe-body">
+        <div class="recipe-section"><strong>Ingredientes:</strong> 1L nata · 125gr azúcar · interior 1 vaina vainilla</div>
+        <div class="recipe-section"><strong>Proceso:</strong> Semimontar thermomix vel.4.5–5 → reservar en frío en taper</div>
+      </div>
+    </div>
+
+    <div class="recipe-card">
+      <div class="recipe-head" onclick="toggleRecipe(this)">Frosting <span class="chevron">▼</span></div>
+      <div class="recipe-body">
+        <div class="recipe-section"><strong>Ingredientes:</strong> 1kg queso crema · 525gr azúcar glass · 525gr mantequilla atemperada</div>
+        <div class="recipe-section"><strong>Proceso:</strong> Montar mantequilla+azúcar → crema homogénea → añadir queso crema → crema fina y brillante → conservar en frío</div>
+      </div>
+    </div>
+
+    <div class="recipe-card">
+      <div class="recipe-head" onclick="toggleRecipe(this)">Coulis de frutos rojos <span class="chevron">▼</span></div>
+      <div class="recipe-body">
+        <div class="recipe-section"><strong>Ingredientes:</strong> 1kg fruta · 2 anises estrellados · ½ rama canela · 100gr azúcar · 50ml vinagre Jerez · 200ml vino Tramo reducido a 100ml</div>
+        <div class="recipe-section"><strong>Proceso:</strong> Bolsa de vacío → sellar → cocer 90°C 4h → colar por fino → bolsas 200ml</div>
+        <div class="recipe-section"><strong>Stock mínimo:</strong> 20ud 200ml en congelador</div>
+      </div>
+    </div>
+
+    <div class="recipe-card">
+      <div class="recipe-head" onclick="toggleRecipe(this)">Fruta de temporada <span class="chevron">▼</span></div>
+      <div class="recipe-body">
+        <div class="recipe-section"><strong>Arándanos:</strong> Pasar por brasa · reservar</div>
+        <div class="recipe-section"><strong>Cerezas:</strong> Quitar hueso con cuidado · reservar</div>
+        <div class="recipe-section"><strong>Fresas:</strong> Cortar en 4/2 · brasa · reservar</div>
+        <div class="recipe-section"><strong>Frutos rojos congelados:</strong> Brasa rápida · reservar</div>
+        <div class="recipe-section"><strong>Higos (por kg):</strong> 25ml zumo limón · 2 cucharadas sumac · sal · 80gr azúcar glass · 2 ramas menta · 100ml agua → cortar en 4 · extender en gastros · horno 200°C 4min</div>
+      </div>
+    </div>
+
+    <div class="recipe-card">
+      <div class="recipe-head" onclick="toggleRecipe(this)">Avellana garrapiñada <span class="chevron">▼</span></div>
+      <div class="recipe-body">
+        <div class="recipe-section"><strong>Ingredientes:</strong> 500gr avellana · 110gr agua · 110gr azúcar · Sal Maldon</div>
+        <div class="recipe-section"><strong>Proceso:</strong> TPT agua+azúcar → hervir → añadir avellana → empanizar → fuego medio/bajo sin parar de remover hasta caramelizar → estirar papel parafinado → sal Maldon caliente</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ PEDIDOS ══ -->
+  <div class="section" id="tab-pedidos">
+    <div class="block" style="padding-top: 16px;">
+      <div class="block-header"><div class="block-title">Proveedores y frecuencias</div></div>
+    </div>
+
+    <div class="prov-card">
+      <div class="prov-row"><div class="prov-info"><div class="prov-name">Food Moon</div><div class="prov-detail">Proveedor general, secos, comida personal</div></div><div class="prov-freq"><span class="pill p-info">Diario</span></div></div>
+      <div class="prov-row"><div class="prov-info"><div class="prov-name">Tu cosecha</div><div class="prov-detail">Verduras frescas</div></div><div class="prov-freq"><span class="pill p-info">Diario</span></div></div>
+      <div class="prov-row"><div class="prov-info"><div class="prov-name">Pescadería coruñesa</div><div class="prov-detail">Mejillones, boquerones, langostinos urgencia</div></div><div class="prov-freq"><span class="pill p-info">Diario</span></div></div>
+      <div class="prov-row"><div class="prov-info"><div class="prov-name">Raza Nostra</div><div class="prov-detail">Caderas 6×</div></div><div class="prov-freq"><span class="pill p-ok">Semanal</span></div></div>
+      <div class="prov-row"><div class="prov-info"><div class="prov-name">Calaveruela</div><div class="prov-detail">Mantequilla de oveja 4kg</div></div><div class="prov-freq"><span class="pill p-ok">Semanal</span></div></div>
+      <div class="prov-row"><div class="prov-info"><div class="prov-name">Panacea</div><div class="prov-detail">Pan sin gluten</div></div><div class="prov-freq"><span class="pill p-ok">Semanal</span></div></div>
+      <div class="prov-row"><div class="prov-info"><div class="prov-name">Noray</div><div class="prov-detail">Langostinos 40kg</div></div><div class="prov-freq"><span class="pill p-warn">Quincenal</span></div></div>
+      <div class="prov-row"><div class="prov-info"><div class="prov-name">Bico de xeado</div><div class="prov-detail">Helados: orujo, fresa, frutos rojos…</div></div><div class="prov-freq"><span class="pill p-urg">3 días L–V</span></div></div>
+      <div class="prov-row"><div class="prov-info"><div class="prov-name">Amasa</div><div class="prov-detail">Hojaldre (hablar con Carlos)</div></div><div class="prov-freq"><span class="pill p-urg">3 días ant.</span></div></div>
+      <div class="prov-row"><div class="prov-info"><div class="prov-name">Puchero</div><div class="prov-detail">Nibs de cacao · chocolate negro</div></div><div class="prov-freq"><span class="pill p-warn">Según stock</span></div></div>
+      <div class="prov-row"><div class="prov-info"><div class="prov-name">Xanceda</div><div class="prov-detail">Mantequilla ecológica</div></div><div class="prov-freq"><span class="pill p-warn">Según stock</span></div></div>
+      <div class="prov-row"><div class="prov-info"><div class="prov-name">Cultivo</div><div class="prov-detail">Leche de cabra 18L (alt. Food Moon)</div></div><div class="prov-freq"><span class="pill p-warn">Según stock</span></div></div>
+    </div>
+
+    <div class="block mt16">
+      <div class="block-header"><div class="block-title">Pedido semanal tipo</div></div>
+    </div>
+
+    <div class="pedido-grid">
+      <div class="col-card">
+        <h3>Verdura / fruta</h3>
+        <ul>
+          <li>Cebolla morada 5kg</li>
+          <li>Ajos 2kg</li>
+          <li>Aguacates 6kg</li>
+          <li>Limas 3kg</li>
+          <li>Patatas 10kg</li>
+          <li>Cebollino 7 manojos</li>
+          <li>Arándanos 5kg</li>
+        </ul>
+      </div>
+      <div class="col-card">
+        <h3>Lácteos / huevos</h3>
+        <ul>
+          <li>Queso crema 3kg</li>
+          <li>Mantequilla oveja 4kg</li>
+          <li>Yema pasteurizada 8L</li>
+          <li>Nata 12L</li>
+          <li>Leche cabra 18L</li>
+        </ul>
+      </div>
+      <div class="col-card">
+        <h3>Secos / otros</h3>
+        <ul>
+          <li>Aceite 12 octubre 2L</li>
+          <li>Aceite zafra 2L</li>
+          <li>Perrins 1L</li>
+          <li>Azúcar glass 4kg</li>
+          <li>Azúcar blanco 5kg</li>
+        </ul>
+      </div>
+      <div class="col-card">
+        <h3>Carnes / marisco</h3>
+        <ul>
+          <li>Caderas 6kg (Raza Nostra)</li>
+          <li>Langostinos 20kg</li>
+          <li>Mejillones 10kg</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="block mt16">
+      <div class="info-box"><strong>Panes (pedido semanal)</strong><ul><li>Pan blanco ×25</li><li>Pan limón ×15</li><li>Croissant ×55</li></ul></div>
+      <div class="info-box"><strong>Alertas especiales</strong><p>· Bico de xeado: pedir con 3 días de antelación mínimo (solo L–V)<br>· Amasa (hojaldre): 3 días antelación, hablar con Carlos directamente<br>· Noray (langostinos): repasar stock cada semana, pedido quincenal 40kg</p></div>
+    </div>
+  </div>
+
+  <!-- ══ SEMANAL ══ -->
+  <div class="section" id="tab-semanal">
+    <div class="block" style="padding-top: 16px;">
+      <div class="block-header">
+        <div class="block-title">Checklist semanal</div>
+        <button class="reset-btn" onclick="resetSec('sl')">Resetear</button>
+      </div>
+      <div class="checklist" id="sl">
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Hacer pedido semanal (ver tab Pedidos)</div><div class="sublabel">Recordar 3 días: Bico de xeado y Amasa</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Revisión profunda cámaras delantera y trasera</div><div class="sublabel">Descartar caducados, reorganizar, FIFO</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Revisar stock congelador</div><div class="sublabel">Helados, ganache, coulis, hojaldre, langostinos</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Producir lotes de larga duración</div><div class="sublabel">Mostaza 48h · coulis vacío 90°C 4h · escabeche toda la noche</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Revisión stock almacén secos</div><div class="sublabel">Chocolates, gelatinas, nibs, harina, azúcares</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Briefing con el chef de cuisine</div><div class="sublabel">Incidencias, propuestas, cambios de carta, fruta temporada</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Limpieza profunda zona pastelería</div><div class="sublabel">Abatidor · vacío · 2 hornos · kitchen · thermomix · cortafiambres</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Limpieza suelos, secos y cámaras</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Revisar registros APPCC de la semana</div></div></div>
+        <div class="check-item" onclick="toggle(this)"><div class="checkbox"><div class="checkmark"></div></div><div class="check-text"><div class="label">Evaluar ayudante: velocidad, limpieza, comprensión</div></div></div>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-header"><div class="block-title">Planificador semanal</div></div>
+    </div>
+
+    <div class="day-card">
+      <div class="day-head"><div class="day-name">Lunes</div><div class="day-alert">Reposar 48h/toda la noche</div></div>
+      <div class="day-body">Escabeche mejillón · coulis · mostaza casera</div>
+    </div>
+    <div class="day-card">
+      <div class="day-head"><div class="day-name">Martes</div><div class="day-alert">Verificar helados Bico</div></div>
+      <div class="day-body">Ganache limón · ketchup · puré limón</div>
+    </div>
+    <div class="day-card">
+      <div class="day-head"><div class="day-name">Miércoles</div><div class="day-alert">Hornear hojaldre si &lt;32 discos</div></div>
+      <div class="day-body">Flanes (reposo 12h) · frosting · chantilly</div>
+    </div>
+    <div class="day-card">
+      <div class="day-head"><div class="day-name">Jueves</div><div class="day-alert">Producción fin de semana</div></div>
+      <div class="day-body">Sabayón · limón mousse · gel limón</div>
+    </div>
+    <div class="day-card">
+      <div class="day-head"><div class="day-name">Viernes</div><div class="day-alert">Patata chip · mantequilla ahumada</div></div>
+      <div class="day-body">Reposición general · avellanas garrapiñadas</div>
+    </div>
+    <div class="day-card">
+      <div class="day-head"><div class="day-name">Sábado</div><div class="day-alert">—</div></div>
+      <div class="day-body">Solo reposición urgente de timbre y cámara</div>
+    </div>
+
+    <div class="block mt16">
+      <div class="block-header"><div class="block-title">Horarios del equipo</div></div>
+      <div class="horario-card">
+        <div class="horario-row"><div class="horario-label">Turno mañana</div><div class="horario-time">8:00 – 17:00</div></div>
+        <div class="horario-row"><div class="horario-label">Turno tarde</div><div class="horario-time">15:30 – 00:30</div></div>
+        <div class="horario-row"><div class="horario-label">Turno partido</div><div class="horario-time">11:30–16:30 · 19:30–00:30</div></div>
+      </div>
+      <div class="info-box mt8"><strong>Solapamiento tarde–mañana</strong><p>El turno de tarde debe dejar la mantequilla empomada para el ahumado del día siguiente. El turno de mañana tiene que poder arrancar producción sin depender del turno anterior.</p></div>
+    </div>
+  </div>
+
+</div><!-- /content -->
+
+<!-- ── BOTTOM NAV ── -->
+<nav class="bottom-nav">
+  <button class="nav-btn active" onclick="showTab('diaria',this)">
+    <span class="icon">✓</span>
+    <span>Diaria</span>
+  </button>
+  <button class="nav-btn" onclick="showTab('timbre',this)">
+    <span class="icon">🔔</span>
+    <span>Timbre</span>
+  </button>
+  <button class="nav-btn" onclick="showTab('camaras',this)">
+    <span class="icon">❄</span>
+    <span>Cámaras</span>
+  </button>
+  <button class="nav-btn" onclick="showTab('recetas',this)">
+    <span class="icon">📋</span>
+    <span>Recetas</span>
+  </button>
+  <button class="nav-btn" onclick="showTab('pedidos',this)">
+    <span class="icon">🛒</span>
+    <span>Pedidos</span>
+  </button>
+  <button class="nav-btn" onclick="showTab('semanal',this)">
+    <span class="icon">📅</span>
+    <span>Semanal</span>
+  </button>
+</nav>
+
+<script>
+const dailySections = ['ap','mf','mp','sv','ci'];
+
+function toggle(el) {
+  el.classList.toggle('done');
+  updateProgress();
+}
+
+function resetSec(id) {
+  document.querySelectorAll('#' + id + ' .check-item').forEach(i => i.classList.remove('done'));
+  updateProgress();
+}
+
+function updateProgress() {
+  let all = [];
+  dailySections.forEach(s => {
+    document.querySelectorAll('#' + s + ' .check-item').forEach(i => all.push(i));
+  });
+  const done = all.filter(i => i.classList.contains('done')).length;
+  const pct = all.length ? Math.round(done / all.length * 100) : 0;
+  document.getElementById('d-total').textContent = all.length;
+  document.getElementById('d-done').textContent = done;
+  document.getElementById('d-pend').textContent = all.length - done;
+  document.getElementById('d-fill').style.width = pct + '%';
+  document.getElementById('d-pct').textContent = pct + '% completado';
+}
+
+function showTab(name, btn) {
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-' + name).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'instant' });
+}
+
+function toggleRecipe(head) {
+  const body = head.nextElementSibling;
+  const chev = head.querySelector('.chevron');
+  body.classList.toggle('open');
+  chev.classList.toggle('open');
+}
+
+updateProgress();
+</script>
+</body>
+</html>

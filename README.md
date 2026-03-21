@@ -43,7 +43,7 @@ For local use:
 git clone https://github.com/mch-codes/Tramo-Frio-Pasteleria.git
  
 # Open in browser
-open index.html
+open https://mch-codes.github.io/Tramo-Frio-Pasteleria/
 ```
  
 ## Context
